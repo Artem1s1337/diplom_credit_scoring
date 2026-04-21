@@ -1,0 +1,33 @@
+[project]
+name = "diplom"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "catboost>=1.2.10",
+    "fastapi>=0.136.0",
+    "jupyter>=1.1.1",
+    "lightgbm>=4.6.0",
+    "matplotlib>=3.10.8",
+    "missingno>=0.5.2",
+    "numpy>=2.4.4",
+    "pandas>=3.0.2",
+    "psycopg2-binary>=2.9.11",
+    "pydantic>=2.13.2",
+    "python-dotenv>=1.2.2",
+    "requests>=2.33.1",
+    "scikit-learn>=1.8.0",
+    "seaborn>=0.13.2",
+    "sqlalchemy>=2.0.49",
+    "streamlit>=1.56.0",
+    "torch>=2.11.0",
+    "tqdm>=4.67.3",
+    "uvicorn>=0.44.0",
+    "xgboost>=3.2.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.11",
+]
