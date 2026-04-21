@@ -66,8 +66,7 @@
 git clone https://github.com/Artem1s1337/diplom_credit_scoring.git
 ```
 После клонирования репозитория создайте внутри проекта папку `/data` и сохраните туда файлы с Яндекс.Диска: https://disk.yandex.ru/d/tJfrSwyEtuF7_g. Не переименовывайте их, это данные моделей:
-```<img width="871" height="471" alt="architechture" src="https://github.com/user-attachments/assets/cee04e9b-dd2b-46a0-8e08-3a8ad8ef9e19" />
-
+```
 # Переходим в директорию
 cd diplom_credit_scoring
 
