@@ -1,0 +1,73 @@
+services:
+  backend:
+    build:
+      dockerfile: Dockerfile.backend
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./images:/app/images
+    restart: unless-stopped
+    environment:
+      - PYTHONPATH=/app
+      - DATABASE_URL=postgresql://user:password@postgres:5432/scoring_db
+    depends_on:
+      data-loader:
+        condition: service_completed_successfully
+
+  frontend:
+    build:
+      dockerfile: Dockerfile.frontend
+      context: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./images:/app/images
+    restart: unless-stopped
+    environment:
+      - PYTHONPATH=/app
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: scoring_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d scoring_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  data-loader:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PYTHONPATH=/app
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=scoring_db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - DATABASE_URL=postgresql://user:password@postgres:5432/scoring_db
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: python load_bureau.py
+
+volumes:
+  postgres_data:

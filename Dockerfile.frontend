@@ -1,0 +1,25 @@
+FROM python:3.12-slim
+
+# Установка рабочей директории
+WORKDIR /app
+
+# Установка uv
+RUN pip install --no-cache-dir uv
+
+# Создание requirements-frontend.txt с необходимыми зависимостями
+RUN echo "streamlit" > requirements-frontend.txt && \
+    echo "numpy" >> requirements-frontend.txt && \
+    echo "pandas" >> requirements-frontend.txt && \
+    echo "requests" >> requirements-frontend.txt
+
+# Установка зависимостей с помощью uv
+RUN uv pip install --system -r requirements-frontend.txt
+
+# Копирование исходного кода
+COPY src/frontend/ ./src/frontend/
+
+# Экспорт порта
+EXPOSE 8501
+
+# Запуск приложения
+CMD ["streamlit", "run", "src/frontend/app.py", "--server.port=8501", "--server.address=0.0.0.0"]

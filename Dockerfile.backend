@@ -1,0 +1,41 @@
+FROM python:3.12-slim
+
+# Установка рабочей директории
+WORKDIR /app
+
+# Установка системных зависимостей для сборки psycopg2 и других пакетов
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Установка uv
+RUN pip install --no-cache-dir uv
+
+# Создание requirements-backend.txt с необходимыми зависимостями
+RUN echo "fastapi" > requirements-backend.txt && \
+    echo "uvicorn" >> requirements-backend.txt && \
+    echo "pydantic" >> requirements-backend.txt && \
+    echo "numpy" >> requirements-backend.txt && \
+    echo "pandas" >> requirements-backend.txt && \
+    echo "scikit-learn" >> requirements-backend.txt && \
+    echo "psycopg2-binary" >> requirements-backend.txt && \
+    echo "sqlalchemy" >> requirements-backend.txt && \
+    echo "python-dotenv" >> requirements-backend.txt && \
+    echo "catboost" >> requirements-backend.txt && \
+    echo "xgboost" >> requirements-backend.txt
+
+# Установка зависимостей с помощью uv
+RUN uv pip install --system -r requirements-backend.txt
+
+# Копирование исходного кода
+COPY src/backend/ ./src/backend/
+
+# Копирование скрипта загрузки данных
+COPY load_bureau.py ./load_bureau.py
+
+# Экспорт порта
+EXPOSE 8000
+
+# Запуск приложения
+CMD ["uvicorn", "src.backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
