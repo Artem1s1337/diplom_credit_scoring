@@ -1,0 +1,13 @@
+{
+  "best_model": "catboost",
+  "metrics_test": {
+    "roc_auc": 0.657211089961258,
+    "accuracy": 0.9192559712534348,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0
+  },
+  "joblib_path": "models/first_best\\best_model_catboost.joblib",
+  "roc_plot": "images/metrics/first\\roc_auc_all_models.png",
+  "cm_plot": "images/metrics/first\\cm_best_model.png"
+}
