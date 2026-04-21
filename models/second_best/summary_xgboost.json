@@ -1,0 +1,13 @@
+{
+  "best_model": "xgboost",
+  "metrics_test": {
+    "roc_auc": 0.7796816492909776,
+    "accuracy": 0.9201177178349024,
+    "precision": 0.5787878787878787,
+    "recall": 0.038469284994964756,
+    "f1": 0.07214353163361661
+  },
+  "joblib_path": "models/second_best\\best_model_xgboost.joblib",
+  "roc_plot": "images/metrics/second\\roc_auc_all_models.png",
+  "cm_plot": "images/metrics/second\\cm_best_model.png"
+}
